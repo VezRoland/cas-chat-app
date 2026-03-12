@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Navbar } from '../../../components/navbar/navbar';
 
 interface ChatRoom {
   id: string;
@@ -7,6 +8,7 @@ interface ChatRoom {
 }
 
 @Component({
+  imports: [Navbar],
   templateUrl: './rooms-page.html',
 })
 export class RoomsPage {

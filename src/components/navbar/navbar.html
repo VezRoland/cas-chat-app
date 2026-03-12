@@ -1,0 +1,12 @@
+<mat-toolbar class="flex gap-8">
+  <!-- <button matIconButton class="example-icon" aria-label="Example icon-button with menu icon">
+    <mat-icon>menu</mat-icon>
+  </button> -->
+  <ul class="flex gap-4">
+    @for (link of links; track $index) {
+      <li class="text-sm">
+        <a href="{{link.url}}">{{ link.title }}</a>
+      </li>
+    }
+  </ul>
+</mat-toolbar>
