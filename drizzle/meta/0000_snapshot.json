@@ -1,5 +1,5 @@
 {
-  "id": "4c2cf45b-5694-4d31-97f6-d9bf5f776c71",
+  "id": "a0dae243-f6ad-483d-82d8-75bbcc53c2ef",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -12,10 +12,11 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
-        "ownerId": {
-          "name": "ownerId",
+        "owner_id": {
+          "name": "owner_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -26,8 +27,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "isVisible": {
-          "name": "isVisible",
+        "is_visible": {
+          "name": "is_visible",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
@@ -39,8 +40,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
@@ -49,12 +50,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "chat_room_ownerId_user_id_fk": {
-          "name": "chat_room_ownerId_user_id_fk",
+        "chat_room_owner_id_user_id_fk": {
+          "name": "chat_room_owner_id_user_id_fk",
           "tableFrom": "chat_room",
           "tableTo": "user",
           "columnsFrom": [
-            "ownerId"
+            "owner_id"
           ],
           "columnsTo": [
             "id"
@@ -73,14 +74,14 @@
       "name": "chat_room_message",
       "schema": "",
       "columns": {
-        "messageId": {
-          "name": "messageId",
+        "message_id": {
+          "name": "message_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
-        "roomId": {
-          "name": "roomId",
+        "room_id": {
+          "name": "room_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -88,12 +89,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "chat_room_message_messageId_message_id_fk": {
-          "name": "chat_room_message_messageId_message_id_fk",
+        "chat_room_message_message_id_message_id_fk": {
+          "name": "chat_room_message_message_id_message_id_fk",
           "tableFrom": "chat_room_message",
           "tableTo": "message",
           "columnsFrom": [
-            "messageId"
+            "message_id"
           ],
           "columnsTo": [
             "id"
@@ -101,12 +102,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "chat_room_message_roomId_chat_room_id_fk": {
-          "name": "chat_room_message_roomId_chat_room_id_fk",
+        "chat_room_message_room_id_chat_room_id_fk": {
+          "name": "chat_room_message_room_id_chat_room_id_fk",
           "tableFrom": "chat_room_message",
           "tableTo": "chat_room",
           "columnsFrom": [
-            "roomId"
+            "room_id"
           ],
           "columnsTo": [
             "id"
@@ -116,11 +117,11 @@
         }
       },
       "compositePrimaryKeys": {
-        "chat_room_message_messageId_roomId_pk": {
-          "name": "chat_room_message_messageId_roomId_pk",
+        "chat_room_message_message_id_room_id_pk": {
+          "name": "chat_room_message_message_id_room_id_pk",
           "columns": [
-            "messageId",
-            "roomId"
+            "message_id",
+            "room_id"
           ]
         }
       },
@@ -133,14 +134,14 @@
       "name": "chat_room_user",
       "schema": "",
       "columns": {
-        "roomId": {
-          "name": "roomId",
+        "room_id": {
+          "name": "room_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
-        "userId": {
-          "name": "userId",
+        "user_id": {
+          "name": "user_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -151,8 +152,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
@@ -161,12 +162,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "chat_room_user_roomId_chat_room_id_fk": {
-          "name": "chat_room_user_roomId_chat_room_id_fk",
+        "chat_room_user_room_id_chat_room_id_fk": {
+          "name": "chat_room_user_room_id_chat_room_id_fk",
           "tableFrom": "chat_room_user",
           "tableTo": "chat_room",
           "columnsFrom": [
-            "roomId"
+            "room_id"
           ],
           "columnsTo": [
             "id"
@@ -174,12 +175,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "chat_room_user_userId_user_id_fk": {
-          "name": "chat_room_user_userId_user_id_fk",
+        "chat_room_user_user_id_user_id_fk": {
+          "name": "chat_room_user_user_id_user_id_fk",
           "tableFrom": "chat_room_user",
           "tableTo": "user",
           "columnsFrom": [
-            "userId"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -189,11 +190,11 @@
         }
       },
       "compositePrimaryKeys": {
-        "chat_room_user_roomId_userId_pk": {
-          "name": "chat_room_user_roomId_userId_pk",
+        "chat_room_user_room_id_user_id_pk": {
+          "name": "chat_room_user_room_id_user_id_pk",
           "columns": [
-            "roomId",
-            "userId"
+            "room_id",
+            "user_id"
           ]
         }
       },
@@ -210,10 +211,11 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
-        "userId": {
-          "name": "userId",
+        "user_id": {
+          "name": "user_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -224,15 +226,15 @@
           "primaryKey": false,
           "notNull": true
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
@@ -240,12 +242,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "message_userId_user_id_fk": {
-          "name": "message_userId_user_id_fk",
+        "message_user_id_user_id_fk": {
+          "name": "message_user_id_user_id_fk",
           "tableFrom": "message",
           "tableTo": "user",
           "columnsFrom": [
-            "userId"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -268,17 +270,18 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
-        "firstName": {
-          "name": "firstName",
-          "type": "uuid",
+        "first_name": {
+          "name": "first_name",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "lastName": {
-          "name": "lastName",
-          "type": "uuid",
+        "last_name": {
+          "name": "last_name",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -300,8 +303,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
@@ -332,10 +335,11 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
-        "userId": {
-          "name": "userId",
+        "user_id": {
+          "name": "user_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -355,12 +359,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "user_credential_userId_user_id_fk": {
-          "name": "user_credential_userId_user_id_fk",
+        "user_credential_user_id_user_id_fk": {
+          "name": "user_credential_user_id_user_id_fk",
           "tableFrom": "user_credential",
           "tableTo": "user",
           "columnsFrom": [
-            "userId"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -379,14 +383,14 @@
       "name": "user_message",
       "schema": "",
       "columns": {
-        "messageId": {
-          "name": "messageId",
+        "message_id": {
+          "name": "message_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
-        "recipientId": {
-          "name": "recipientId",
+        "recipient_id": {
+          "name": "recipient_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -394,12 +398,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "user_message_messageId_message_id_fk": {
-          "name": "user_message_messageId_message_id_fk",
+        "user_message_message_id_message_id_fk": {
+          "name": "user_message_message_id_message_id_fk",
           "tableFrom": "user_message",
           "tableTo": "message",
           "columnsFrom": [
-            "messageId"
+            "message_id"
           ],
           "columnsTo": [
             "id"
@@ -407,12 +411,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "user_message_recipientId_user_id_fk": {
-          "name": "user_message_recipientId_user_id_fk",
+        "user_message_recipient_id_user_id_fk": {
+          "name": "user_message_recipient_id_user_id_fk",
           "tableFrom": "user_message",
           "tableTo": "user",
           "columnsFrom": [
-            "recipientId"
+            "recipient_id"
           ],
           "columnsTo": [
             "id"
@@ -422,11 +426,11 @@
         }
       },
       "compositePrimaryKeys": {
-        "user_message_messageId_recipientId_pk": {
-          "name": "user_message_messageId_recipientId_pk",
+        "user_message_message_id_recipient_id_pk": {
+          "name": "user_message_message_id_recipient_id_pk",
           "columns": [
-            "messageId",
-            "recipientId"
+            "message_id",
+            "recipient_id"
           ]
         }
       },

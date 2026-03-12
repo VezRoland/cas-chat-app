@@ -1,9 +1,9 @@
 import { boolean, pgTable, primaryKey, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 export const user = pgTable('user', {
-  id: uuid().primaryKey(),
-  firstName: uuid().notNull(),
-  lastName: uuid().notNull(),
+  id: uuid().defaultRandom().primaryKey(),
+  firstName: text().notNull(),
+  lastName: text().notNull(),
   username: text().notNull(),
   email: text().notNull().unique(),
   password: text(),
@@ -11,14 +11,14 @@ export const user = pgTable('user', {
 });
 
 export const userCredential = pgTable('user_credential', {
-  id: uuid().primaryKey(),
+  id: uuid().defaultRandom().primaryKey(),
   userId: uuid().references(() => user.id),
   provider: text().notNull(),
   subject: text().notNull(),
 });
 
 export const chatRoom = pgTable('chat_room', {
-  id: uuid().primaryKey(),
+  id: uuid().defaultRandom().primaryKey(),
   ownerId: uuid().references(() => user.id),
   title: text().notNull(),
   isVisible: boolean().notNull().default(true),
@@ -27,7 +27,7 @@ export const chatRoom = pgTable('chat_room', {
 });
 
 export const message = pgTable('message', {
-  id: uuid().primaryKey(),
+  id: uuid().defaultRandom().primaryKey(),
   userId: uuid().references(() => user.id),
   content: text().notNull(),
   createdAt: timestamp().notNull().defaultNow(),
