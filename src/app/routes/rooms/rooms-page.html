@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat Rooms</title>
+  </head>
+  <body>
+    <header>
+      <h1>Chat Rooms</h1>
+      <h2>Discover all the publicly available chat rooms.</h2>
+    </header>
+    <main>
+      <ul>
+        @for (room of rooms; track $index) {
+          <li class="relative">
+            <h3>{{ room.title }}</h3>
+            <p>{{ room.owner }}</p>
+            <a class="absolute top-0 left-0 w-full h-full" href="/rooms/{{ room.id }}"></a>
+          </li>
+        }
+      </ul>
+    </main>
+  </body>
+</html>
