@@ -275,6 +275,19 @@ router.post(
           userId: req.user!.id,
           content: data.content,
         },
+        select: {
+          id: true,
+          content: true,
+          user: {
+            select: {
+              id: true,
+              username: true,
+              profilePicture: true,
+            },
+          },
+          createdAt: true,
+          editedAt: true,
+        },
       });
 
       return res.status(201).json(message);
@@ -308,6 +321,9 @@ router.get(
           },
           createdAt: true,
           editedAt: true,
+        },
+        orderBy: {
+          createdAt: "desc",
         },
         take: 50,
         skip: page * 50,

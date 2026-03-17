@@ -1,12 +1,13 @@
-import { Component, effect, inject, input } from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { ChatService } from '../chat.service';
 import { AuthService } from '../../auth/auth.service';
 import { NgClass, DatePipe } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { MatIcon } from "@angular/material/icon";
-import { MatButtonModule } from "@angular/material/button";
+import { MatIcon } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { form, FormField } from '@angular/forms/signals';
 
 @Component({
   selector: 'chat-area',
@@ -19,8 +20,9 @@ import { MatButtonModule } from "@angular/material/button";
     NgClass,
     DatePipe,
     MatIcon,
-    MatButtonModule
-],
+    MatButtonModule,
+    FormField,
+  ],
 })
 export class ChatAreaComponent {
   private authService = inject(AuthService);
@@ -30,6 +32,11 @@ export class ChatAreaComponent {
   user = this.authService.currentUser;
   messages = this.chatService.conversationMessages;
 
+  messageModel = signal({
+    message: '',
+  });
+  messageForm = form(this.messageModel);
+
   constructor() {
     effect(() => {
       const currentId = this.id();
@@ -37,5 +44,15 @@ export class ChatAreaComponent {
         this.chatService.getConversationMessages(currentId);
       }
     });
+  }
+
+  sendMessage() {
+    const text = this.messageForm.message().value().trim();
+    const id = this.id();
+
+    if (id && text.length > 0) {
+      this.chatService.sendConversationMessage(id, text);
+      this.messageForm.message().reset('');
+    }
   }
 }

@@ -26,4 +26,18 @@ export class ChatService {
       >(`${this.apiUrl}/conversations/${id}/messages`, { withCredentials: true })
       .subscribe((messages) => this.conversationMessages.set(messages));
   }
+
+  sendConversationMessage(id: string, content: string) {
+    return this.http
+      .post<ConversationMessage>(
+        `${this.apiUrl}/conversations/${id}/message`,
+        {
+          content,
+        },
+        { withCredentials: true },
+      )
+      .subscribe({
+        next: () => this.getConversationMessages(id),
+      });
+  }
 }
