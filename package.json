@@ -6,6 +6,6 @@
     "backend"
   ],
   "scripts": {
-    "start": "npm run start --workspace=frontend"
+    "start": "npm run start --workspaces"
   }
 }
