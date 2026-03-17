@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id             String                @id @default(uuid()) @db.Uuid()
+  firstName      String
+  lastName       String
+  username       String
+  email          String                @unique
+  profilePicture String
+  createdAt      DateTime              @default(now())
+  credentials    UserCredential[]
+  sessions       UserSession[]
+  conversations  ConversationUser[]
+  messages       ConversationMessage[]
+}
+
+model UserCredential {
+  userId     String   @db.Uuid()
+  provider   String
+  identifier String
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, provider])
+}
+
+model UserSession {
+  id        String   @id @default(uuid()) @db.Uuid()
+  userId    String   @db.Uuid()
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Conversation {
+  id        String                @id @default(uuid()) @db.Uuid()
+  title     String
+  isPublic  Boolean               @default(false)
+  password  String?
+  createdAt DateTime              @default(now())
+  users     ConversationUser[]
+  messages  ConversationMessage[]
+}
+
+model ConversationUser {
+  conversationId String       @db.Uuid()
+  userId         String       @db.Uuid()
+  nickname       String?
+  isOwner        Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([conversationId, userId])
+}
+
+model ConversationMessage {
+  id             String       @id @default(uuid()) @db.Uuid()
+  conversationId String       @db.Uuid()
+  userId         String       @db.Uuid()
+  content        String
+  createdAt      DateTime     @default(now())
+  editedAt       DateTime?    @updatedAt
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
