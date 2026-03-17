@@ -17,7 +17,7 @@ router.post(
   isGuest,
   emailPasswordAuth,
   (req: Request, res: Response) => {
-    res.sendStatus(200);
+    res.json(req.user);
   },
 );
 

@@ -1,0 +1,22 @@
+<div class="w-full h-screen flex flex-col justify-center items-center gap-8">
+  <header class="w-full max-w-xl">
+    <h1 class="text-3xl">Sign in</h1>
+    <h2>Log into your already existing account.</h2>
+  </header>
+  <form class="w-full max-w-xl flex flex-col" (submit)="onSubmit($event)"
+    method="post">
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" placeholder="johndoe@gmail.com"
+        [formField]="signInForm.email">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" placeholder="********"
+        [formField]="signInForm.password">
+    </mat-form-field>
+    <button matButton="filled">
+      Sign in
+    </button>
+  </form>
+</div>
