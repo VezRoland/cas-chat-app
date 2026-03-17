@@ -3,12 +3,16 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
+import authRoute from "./routes/auth.route"
+
 const PORT = process.env.PORT || 3000;
 
 const app = express();
 app.use(express.json());
 app.use(cors({ origin: process.env.FRONTEND_ORIGIN, credentials: true }));
 app.use(cookieParser());
+
+app.use("/auth", authRoute);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
