@@ -17,4 +17,9 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [{ path: ':id', component: ChatAreaComponent }],
   },
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'chat',
+  },
 ];

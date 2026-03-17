@@ -69,7 +69,7 @@ router.post(
       });
 
       res.clearCookie("sessionId");
-      return res.sendStatus(200);
+      return res.json({ message: "Successfully signed out." });
     } catch (error) {
       return next(error);
     }
