@@ -1,0 +1,7 @@
+<ul class="flex flex-col gap-2">
+  @for (preview of previews(); track preview.id) {
+    <a routerLink="/chat/{{ preview.id }}">
+      <li>{{ preview.title }}</li>
+    </a>
+  }
+</ul>

@@ -126,6 +126,7 @@ router.get(
                 select: {
                   id: true,
                   username: true,
+                  profilePicture: true,
                 },
               },
             },
@@ -229,6 +230,7 @@ router.get(
             select: {
               id: true,
               username: true,
+              profilePicture: true,
             },
           },
           nickname: true,
@@ -301,6 +303,7 @@ router.get(
             select: {
               id: true,
               username: true,
+              profilePicture: true,
             },
           },
           createdAt: true,

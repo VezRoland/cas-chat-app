@@ -1,0 +1,37 @@
+<div class="h-full max-h-screen flex flex-col">
+  <div class="flex-1 flex-col-reverse p-8 overflow-auto">
+    <ul class="flex flex-col gap-8">
+      @for (message of messages(); track message.id) {
+        <li
+          class="max-w-3/4 flex flex-col gap-1"
+          [ngClass]="{ 'self-end text-right': message.user.id === user()?.id }"
+        >
+          <div class="flex justify-between">
+            @if (message.user.id !== user()?.id) {
+              <figure class="flex items-center gap-2">
+                <img
+                  class="w-6 h-6 rounded-full"
+                  src="{{ message.user.profilePicture }}"
+                  alt="Profile picture"
+                />
+                <figcaption>
+                  {{ message.user.username }}
+                  <span class="text-gray-500">({{ message.createdAt | date: 'HH:mm' }})</span>
+                </figcaption>
+              </figure>
+            }
+          </div>
+          <p>{{ message.content }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+  <form>
+    <mat-form-field class="w-full px-8" appearance="outline">
+      <input type="text" matInput placeholder="Type your message here..." />
+      <button type="submit" matIconButton matSuffix>
+        <mat-icon matSuffix fontIcon="send"></mat-icon>
+      </button>
+    </mat-form-field>
+  </form>
+</div>
