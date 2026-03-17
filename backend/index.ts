@@ -4,6 +4,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 import authRoute from "./routes/auth.route"
+import usersRoute from "./routes/users.route";
+import conversationsRoute from "./routes/conversations.route";
 
 const PORT = process.env.PORT || 3000;
 
@@ -13,6 +15,8 @@ app.use(cors({ origin: process.env.FRONTEND_ORIGIN, credentials: true }));
 app.use(cookieParser());
 
 app.use("/auth", authRoute);
+app.use("/users", usersRoute);
+app.use("/conversations", conversationsRoute);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
