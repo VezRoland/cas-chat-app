@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { form, FormField } from '@angular/forms/signals';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'chat-area',
@@ -28,6 +29,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   ],
 })
 export class ChatAreaComponent {
+  private router = inject(Router);
   private authService = inject(AuthService);
   private chatService = inject(ChatService);
 
@@ -59,5 +61,16 @@ export class ChatAreaComponent {
       this.chatService.sendConversationMessage(id, text);
       this.messageForm.message().reset('');
     }
+  }
+
+  leaveConversation() {
+    const currentId = this.id();
+    if (!currentId) return;
+    this.chatService.leaveConversation(currentId).subscribe({
+      next: () => {
+        this.chatService.getConversationPreviews();
+        this.router.navigate(['/chat']);
+      },
+    });
   }
 }

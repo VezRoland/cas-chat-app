@@ -1,10 +1,15 @@
 <div class="h-full max-h-screen flex flex-col p-8 pl-4">
   <mat-toolbar class="flex justify-between">
     <span>{{ conversation()?.title }}</span>
-    <span class="flex items-center text-sm!">
-      <mat-icon fontIcon="person" inline="true"></mat-icon>
-      {{ conversation()?._count?.users }}
-    </span>
+    <div class="flex items-center gap-4">
+      <span class="flex items-center text-sm!">
+        <mat-icon fontIcon="person" inline="true"></mat-icon>
+        {{ conversation()?._count?.users }}
+      </span>
+      <button matIconButton (click)="leaveConversation()">
+        <mat-icon fontIcon="logout"></mat-icon>
+      </button>
+    </div>
   </mat-toolbar>
 
   <mat-list class="flex-1 overflow-auto">

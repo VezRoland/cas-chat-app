@@ -43,7 +43,15 @@ export class ChatService {
   }
 
   joinConversation(id: string) {
-    return this.http.post(`${this.apiUrl}/conversations/${id}/join`, null, { withCredentials: true })
+    return this.http.post(`${this.apiUrl}/conversations/${id}/join`, null, {
+      withCredentials: true,
+    });
+  }
+
+  leaveConversation(id: string) {
+    return this.http.post(`${this.apiUrl}/conversations/${id}/leave`, null, {
+      withCredentials: true,
+    });
   }
 
   getConversations() {

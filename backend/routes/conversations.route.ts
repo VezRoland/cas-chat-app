@@ -57,6 +57,7 @@ const joinConversationBody = z
   })
   .optional();
 
+// Join a specific conversation
 router.post(
   "/:id/join",
   isSignedIn,
@@ -95,6 +96,26 @@ router.post(
       return res
         .status(201)
         .json({ message: "Successfully joined the conversation." });
+    } catch (error) {
+      return next(error);
+    }
+  },
+);
+
+// Leave a specific conversation
+router.post(
+  "/:id/leave",
+  isSignedIn,
+  async (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
+    try {
+      await prisma.conversationUser.deleteMany({
+        where: {
+          conversationId: req.params.id,
+          userId: req.user?.id,
+        },
+      });
+
+      return res.json({ message: "Successfully left the conversation." });
     } catch (error) {
       return next(error);
     }
