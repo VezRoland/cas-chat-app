@@ -11,6 +11,7 @@ import { form, FormField } from '@angular/forms/signals';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'chat-area',
@@ -30,11 +31,12 @@ import { Router } from '@angular/router';
 })
 export class ChatAreaComponent {
   private router = inject(Router);
-  private authService = inject(AuthService);
+  private titleService = inject(Title);
   private chatService = inject(ChatService);
 
   id = input<string>();
-  user = this.authService.currentUser;
+
+  user = this.chatService.conversationUser;
   conversation = this.chatService.conversation;
   messages = this.chatService.conversationMessages;
 
@@ -45,10 +47,12 @@ export class ChatAreaComponent {
 
   constructor() {
     effect(() => {
-      const currentId = this.id();
-      if (currentId) {
+      if (this.id()) {
+        const currentId = this.id()!;
         this.chatService.getConversation(currentId);
         this.chatService.getConversationMessages(currentId);
+        this.chatService.getConversationUser(currentId);
+        this.titleService.setTitle(`${this.conversation()?.title} | Chat App`);
       }
     });
   }
@@ -67,6 +71,17 @@ export class ChatAreaComponent {
     const currentId = this.id();
     if (!currentId) return;
     this.chatService.leaveConversation(currentId).subscribe({
+      next: () => {
+        this.chatService.getConversationPreviews();
+        this.router.navigate(['/chat']);
+      },
+    });
+  }
+
+  deleteConversation() {
+    const currentId = this.id();
+    if (!currentId) return;
+    this.chatService.deleteConversation(currentId).subscribe({
       next: () => {
         this.chatService.getConversationPreviews();
         this.router.navigate(['/chat']);

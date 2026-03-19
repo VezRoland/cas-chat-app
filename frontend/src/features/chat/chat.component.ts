@@ -21,8 +21,8 @@ import { MatDividerModule } from '@angular/material/divider';
   templateUrl: './chat.component.html',
 })
 export class ChatComponent {
-  private authService = inject(AuthService);
   private router = inject(Router);
+  private authService = inject(AuthService);
 
   user = this.authService.currentUser;
 

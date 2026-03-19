@@ -4,6 +4,7 @@ import {
   Conversation,
   ConversationMessage,
   ConversationPreview,
+  ConversationUser,
   ListConversation,
   ListUser,
   NewConversationBody,
@@ -19,6 +20,7 @@ export class ChatService {
   conversation = signal<Conversation | null>(null);
   conversationPreviews = signal<ConversationPreview[]>([]);
   conversationMessages = signal<ConversationMessage[]>([]);
+  conversationUser = signal<ConversationUser | null>(null);
 
   constructor(private http: HttpClient) {}
 
@@ -54,6 +56,10 @@ export class ChatService {
     });
   }
 
+  deleteConversation(id: string) {
+    return this.http.delete(`${this.apiUrl}/conversations/${id}`, { withCredentials: true });
+  }
+
   getConversations() {
     return this.http.get<ListConversation>(`${this.apiUrl}/conversations/discover`, {
       withCredentials: true,
@@ -85,6 +91,16 @@ export class ChatService {
       )
       .subscribe({
         next: () => this.getConversationMessages(id),
+      });
+  }
+
+  getConversationUser(id: string) {
+    return this.http
+      .get<ConversationUser>(`${this.apiUrl}/conversations/${id}/users/me`, {
+        withCredentials: true,
+      })
+      .subscribe({
+        next: (user) => this.conversationUser.set(user),
       });
   }
 }

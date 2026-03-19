@@ -49,3 +49,11 @@ export interface ConversationMessage {
   createdAt: Date;
   editedAt: Date;
 }
+
+export interface ConversationUser {
+  id: string;
+  username: string;
+  nickname: string;
+  isOwner: boolean;
+  createdAt: Date;
+}

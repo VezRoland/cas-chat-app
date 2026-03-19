@@ -238,6 +238,31 @@ router.get(
   },
 );
 
+// Delete a specific conversation the user is the owner of
+router.delete(
+  "/:id",
+  isSignedIn,
+  async (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
+    try {
+      await prisma.conversation.deleteMany({
+        where: {
+          id: req.params.id,
+          users: {
+            some: {
+              userId: req.user?.id,
+              isOwner: true,
+            },
+          },
+        },
+      });
+
+      res.json({ message: "Successfully deleted the conversation." });
+    } catch (error) {
+      return next(error);
+    }
+  },
+);
+
 // Returns all the participants of a specific conversation the user is part of
 router.get(
   "/:id/users",
@@ -274,6 +299,44 @@ router.get(
           createdAt: u.createdAt,
         })),
       );
+    } catch (error) {
+      return next(error);
+    }
+  },
+);
+
+// Returns the current user of a specific conversation based on the cookie
+router.get(
+  "/:id/users/me",
+  isSignedIn,
+  async (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
+    try {
+      const users = await prisma.conversationUser.findMany({
+        where: {
+          conversationId: req.params.id,
+          userId: req.user?.id,
+        },
+        select: {
+          user: {
+            select: {
+              id: true,
+              username: true,
+              profilePicture: true,
+            },
+          },
+          nickname: true,
+          isOwner: true,
+          createdAt: true,
+        },
+      });
+
+      return res.json({
+        id: users[0].user.id,
+        username: users[0].user.username,
+        nickname: users[0].nickname,
+        isOwner: users[0].isOwner,
+        createdAt: users[0].createdAt,
+      });
     } catch (error) {
       return next(error);
     }

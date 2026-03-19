@@ -20,6 +20,7 @@ export const routes: Routes = [
     canActivate: [guestGuard],
   },
   {
+    title: 'Messaging | Chat App',
     path: 'chat',
     component: ChatComponent,
     canActivate: [authGuard],
