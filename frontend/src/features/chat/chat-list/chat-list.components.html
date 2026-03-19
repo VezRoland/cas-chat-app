@@ -1,23 +1,14 @@
 <div class="w-full flex-1 flex-col-reverse overflow-auto">
   <mat-nav-list>
-    <ul>
-      @for (preview of previews(); track preview.id) {
-        <li class="py-2">
-          <a mat-list-item href="/chat/{{ preview.id }}">asd</a>
-          <span>{{ preview.title }}</span>
-          @if (preview.messages.length > 0) {
-            <div class="flex gap-1.5 px-2">
-              <img
-                class="w-4 h-4 rounded-full"
-                src="{{ preview.messages[0].user.profilePicture }}"
-                alt="Profile picture of {{ preview.messages[0].user.username }}"
-              />
-              <span class="truncate">{{ preview.messages[0].content }}</span>
-            </div>
-          }
-        </li>
+    @for (preview of previews(); track preview.id; let i = $index) {
+      <a routerLink="/chat/{{ preview.id }}">
+        <mat-list-item class="py-2">
+          <span matListItemTitle>{{ preview.title }}</span>
+        </mat-list-item>
+      </a>
+      @if (i < previews().length - 1) {
         <mat-divider></mat-divider>
       }
-    </ul>
+    }
   </mat-nav-list>
 </div>
