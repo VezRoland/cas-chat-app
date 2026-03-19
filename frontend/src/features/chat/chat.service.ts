@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { ConversationMessage, ConversationPreview } from './chat.model';
+import { Conversation, ConversationMessage, ConversationPreview } from './chat.model';
 
 @Injectable({
   providedIn: 'root',
@@ -8,10 +8,17 @@ import { ConversationMessage, ConversationPreview } from './chat.model';
 export class ChatService {
   private readonly apiUrl = 'http://localhost:3000';
 
+  conversation = signal<Conversation | null>(null);
   conversationPreviews = signal<ConversationPreview[]>([]);
   conversationMessages = signal<ConversationMessage[]>([]);
 
   constructor(private http: HttpClient) {}
+
+  getConversation(id: string) {
+    return this.http
+      .get<Conversation>(`${this.apiUrl}/conversations/${id}`, { withCredentials: true })
+      .subscribe((conversation) => this.conversation.set(conversation));
+  }
 
   getConversationPreviews() {
     return this.http

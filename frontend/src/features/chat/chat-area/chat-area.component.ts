@@ -8,20 +8,23 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { form, FormField } from '@angular/forms/signals';
+import { MatListModule } from '@angular/material/list';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'chat-area',
   templateUrl: './chat-area.component.html',
   imports: [
+    MatToolbarModule,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    NgClass,
     DatePipe,
     MatIcon,
     MatButtonModule,
     FormField,
+    MatListModule,
   ],
 })
 export class ChatAreaComponent {
@@ -30,6 +33,7 @@ export class ChatAreaComponent {
 
   id = input<string>();
   user = this.authService.currentUser;
+  conversation = this.chatService.conversation;
   messages = this.chatService.conversationMessages;
 
   messageModel = signal({
@@ -41,6 +45,7 @@ export class ChatAreaComponent {
     effect(() => {
       const currentId = this.id();
       if (currentId) {
+        this.chatService.getConversation(currentId);
         this.chatService.getConversationMessages(currentId);
       }
     });

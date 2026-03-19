@@ -37,3 +37,12 @@ body {
   margin: 0;
   height: 100%;
 }
+
+.mat-mdc-list-item {
+  height: auto !important;
+}
+
+.mat-mdc-list-item-line {
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important;
+}

@@ -1,5 +1,16 @@
 import { User } from '../auth/user.model';
 
+export interface Conversation {
+  id: string;
+  createdAt: Date;
+  title: string;
+  isPublic: boolean;
+  _count: {
+    messages: number;
+    users: number;
+  };
+}
+
 export interface ConversationPreview {
   id: string;
   title: string;

@@ -323,10 +323,8 @@ router.get(
           editedAt: true,
         },
         orderBy: {
-          createdAt: "desc",
+          createdAt: "asc",
         },
-        take: 50,
-        skip: page * 50,
       });
 
       return res.json(messages);
