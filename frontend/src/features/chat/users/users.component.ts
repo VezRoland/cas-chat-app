@@ -12,10 +12,11 @@ import { MatListModule } from '@angular/material/list';
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'users',
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, MatIconModule],
   templateUrl: './users.component.html',
 })
 export class UsersComponent {
@@ -47,7 +48,6 @@ export class UsersDialog {
   readonly data = inject<ListUser[]>(MAT_DIALOG_DATA);
 
   onSendMessageClick(userId: string, username: string) {
-    console.log(userId);
     this.chatService
       .createConversation({
         title: `${this.authService.currentUser()?.username}, ${username}`,

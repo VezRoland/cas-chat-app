@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { UsersComponent } from './users/users.component';
 import { ConversationsComponent } from './conversations/conversations.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   imports: [
@@ -15,6 +16,7 @@ import { ConversationsComponent } from './conversations/conversations.component'
     MatIconModule,
     UsersComponent,
     ConversationsComponent,
+    MatDividerModule,
   ],
   templateUrl: './chat.component.html',
 })

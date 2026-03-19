@@ -10,12 +10,12 @@ import { ChatService } from '../chat.service';
 import { ListConversation } from '../chat.model';
 import { MatListModule } from '@angular/material/list';
 import { DatePipe } from '@angular/common';
-import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'conversations',
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, MatIconModule],
   templateUrl: './conversations.component.html',
 })
 export class ConversationsComponent {
@@ -49,6 +49,7 @@ export class ConversationsDialog {
     this.chatService.joinConversation(id).subscribe({
       next: () => {
         this.dialogRef.close();
+        this.chatService.getConversationPreviews();
         this.router.navigate([`/chat/${id}`]);
       },
     });

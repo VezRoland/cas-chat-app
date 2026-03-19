@@ -2,15 +2,17 @@
   <aside class="w-full max-w-64 h-full max-h-screen flex flex-col gap-8 p-8 pr-4">
     <div class="flex justify-between items-center">
       <img class="w-8 h-8 rounded-full" src="{{ user()?.profilePicture }}" alt="Profile picture" />
-      <span>{{ user()?.username }}</span>
-      <users></users>
-      <conversations></conversations>
-      <button matIconButton="filled" (click)="handleSignOut()">
-        <mat-icon fontIcon="logout"></mat-icon>
-      </button>
+      <div class="flex">
+        <users></users>
+        <conversations></conversations>
+        <button matIconButton="filled" (click)="handleSignOut()">
+          <mat-icon fontIcon="logout"></mat-icon>
+        </button>
+      </div>
     </div>
     <chat-list />
   </aside>
+  <mat-divider vertical="true"></mat-divider>
   <div class="flex-1">
     <router-outlet></router-outlet>
   </div>
