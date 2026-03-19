@@ -3,11 +3,14 @@
     <div class="flex justify-between items-center">
       <img class="w-8 h-8 rounded-full" src="{{ user()?.profilePicture }}" alt="Profile picture" />
       <span>{{ user()?.username }}</span>
+      <users></users>
       <button matIconButton="filled" (click)="handleSignOut()">
         <mat-icon fontIcon="logout"></mat-icon>
       </button>
     </div>
     <chat-list />
   </aside>
-  <router-outlet></router-outlet>
+  <div class="flex-1">
+    <router-outlet></router-outlet>
+  </div>
 </div>

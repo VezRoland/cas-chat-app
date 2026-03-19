@@ -18,6 +18,7 @@ router.get(
         select: {
           id: true,
           username: true,
+          profilePicture: true,
           createdAt: true,
         },
       });

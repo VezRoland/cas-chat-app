@@ -1,6 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { Conversation, ConversationMessage, ConversationPreview } from './chat.model';
+import {
+  Conversation,
+  ConversationMessage,
+  ConversationPreview,
+  ListUser,
+  NewConversationBody,
+  NewConversationResponse,
+} from './chat.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +20,20 @@ export class ChatService {
   conversationMessages = signal<ConversationMessage[]>([]);
 
   constructor(private http: HttpClient) {}
+
+  getUsers() {
+    return this.http.get<ListUser[]>(`${this.apiUrl}/users`, { withCredentials: true });
+  }
+
+  createConversation(newConversation: NewConversationBody) {
+    return this.http.post<NewConversationResponse>(
+      `${this.apiUrl}/conversations`,
+      newConversation,
+      {
+        withCredentials: true,
+      },
+    );
+  }
 
   getConversation(id: string) {
     return this.http

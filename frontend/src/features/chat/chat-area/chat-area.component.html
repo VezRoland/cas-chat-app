@@ -1,4 +1,4 @@
-<div class="h-full max-h-screen grid p-8 pl-4">
+<div class="h-full max-h-screen flex flex-col p-8 pl-4">
   <mat-toolbar class="flex justify-between">
     <span>{{ conversation()?.title }}</span>
     <span class="flex items-center text-sm!">
@@ -7,7 +7,7 @@
     </span>
   </mat-toolbar>
 
-  <mat-list class="overflow-auto">
+  <mat-list class="flex-1 overflow-auto">
     @for (message of messages(); track message.id) {
       @if (message.user.id == user()?.id) {
         <mat-list-item>

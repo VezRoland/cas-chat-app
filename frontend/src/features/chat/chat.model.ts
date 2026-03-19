@@ -1,5 +1,16 @@
 import { User } from '../auth/user.model';
 
+export type ListUser = Pick<User, 'id' | 'username' | 'profilePicture' | 'createdAt'>;
+
+export interface NewConversationBody {
+  title: string;
+  isPublic?: boolean;
+  password?: string;
+  participants: string[];
+}
+
+export type NewConversationResponse = Pick<Conversation, 'id' | 'title' | 'isPublic' | 'createdAt'>;
+
 export interface Conversation {
   id: string;
   createdAt: Date;

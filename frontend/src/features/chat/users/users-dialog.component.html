@@ -1,0 +1,17 @@
+<mat-dialog-content>
+  <mat-list class="max-h-64 overflow-auto">
+    @for (user of data; track user.id) {
+      <mat-list-item>
+        <img matListItemAvatar src="{{ user.profilePicture }}" alt="Profile picture" />
+        <h3 matListItemTitle>{{ user.username }}</h3>
+        <span matListItemMeta>{{ user.createdAt | date: 'dd/MM/yyyy' }}</span>
+        <div matListItemLine>
+          <button matButton="text" (click)="onSendMessageClick(user.id, user.username)">Send message</button>
+        </div>
+      </mat-list-item>
+    }
+  </mat-list>
+  <mat-dialog-actions>
+    <button matButton (click)="onCloseClick()">Close</button>
+  </mat-dialog-actions>
+</mat-dialog-content>

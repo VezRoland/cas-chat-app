@@ -130,9 +130,12 @@ router.get(
                 },
               },
             },
-            orderBy: { createdAt: "desc" },
+            orderBy: { createdAt: "asc" },
             take: 1,
           },
+        },
+        orderBy: {
+          createdAt: "desc",
         },
       });
       return res.json(conversations);
