@@ -1,0 +1,32 @@
+<div class="w-full h-screen flex flex-col justify-center items-center gap-8">
+  <header class="w-full max-w-xl">
+    <h1 class="text-3xl">Sign up</h1>
+    <h2>Create a new account.</h2>
+  </header>
+  <form class="w-full max-w-xl flex flex-col" method="post" (submit)="onSubmit($event)">
+    <div class="flex gap-2">
+      <mat-form-field class="flex-1" appearance="outline">
+        <mat-label>First Name</mat-label>
+        <input matInput type="text" placeholder="John" [formField]="signUpForm.firstName" />
+      </mat-form-field>
+      <mat-form-field class="flex-1" appearance="outline">
+        <mat-label>Last Name</mat-label>
+        <input matInput type="text" placeholder="Doe" [formField]="signUpForm.lastName" />
+      </mat-form-field>
+    </div>
+    <mat-form-field class="flex-1" appearance="outline">
+      <mat-label>Username</mat-label>
+      <input matInput type="text" placeholder="johndoe" [formField]="signUpForm.username" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" placeholder="johndoe@gmail.com" [formField]="signUpForm.email" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" placeholder="********" [formField]="signUpForm.password" />
+    </mat-form-field>
+    <button matButton="filled">Sign up</button>
+    <a class="mt-4 text-right underline" routerLink="/signin">Already have an account.</a>
+  </form>
+</div>

@@ -52,7 +52,7 @@ router.post(
         },
       });
 
-      return res.sendStatus(200);
+      return res.json({ message: "Successfully signed up." });
     } catch (error) {
       return next(error);
     }

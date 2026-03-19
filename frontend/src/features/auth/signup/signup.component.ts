@@ -3,32 +3,35 @@ import { AuthService } from '../auth.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { SignInBody } from '../user.model';
 import { form, FormField } from '@angular/forms/signals';
 import { Router, RouterLink } from '@angular/router';
+import { SignUpBody } from '../user.model';
 
 @Component({
   imports: [FormField, MatFormFieldModule, MatInputModule, MatButtonModule, RouterLink],
-  templateUrl: './signin.component.html',
+  templateUrl: './signup.component.html',
 })
-export class SignInComponent {
-  private authService = inject(AuthService);
-  private router = inject(Router);
+export class SignUpComponent {
+  private authService = inject(AuthService)
+  private router = inject(Router)
 
-  signInModel = signal<SignInBody>({
+  signUpModel = signal<SignUpBody>({
+    firstName: '',
+    lastName: '',
+    username: '',
     email: '',
     password: '',
   });
 
-  signInForm = form(this.signInModel);
+  signUpForm = form(this.signUpModel);
 
   async onSubmit(event: Event) {
     event.preventDefault();
-    const formData = this.signInModel();
-    
-    this.authService.signin(formData).subscribe({
+    const formData = this.signUpModel();
+
+    this.authService.signup(formData).subscribe({
       next: () => {
-        this.router.navigate(['/chat']);
+        this.router.navigate(['/signin']);
       },
       error: (err) => {
         console.error(err);
