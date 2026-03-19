@@ -1,0 +1,16 @@
+<mat-dialog-content>
+  <mat-list class="max-h-64 overflow-auto">
+    @for (conversation of data; track conversation.id) {
+      <mat-list-item>
+        <h3 matListItemTitle>{{ conversation.title }}</h3>
+        <span matListItemMeta>{{ conversation.createdAt | date: 'dd/MM/yyyy' }}</span>
+        <div matListItemLine>
+          <button matButton="text" (click)="onSendJoinClick(conversation.id)">Join</button>
+        </div>
+      </mat-list-item>
+    }
+  </mat-list>
+  <mat-dialog-actions>
+    <button matButton (click)="onCloseClick()">Close</button>
+  </mat-dialog-actions>
+</mat-dialog-content>

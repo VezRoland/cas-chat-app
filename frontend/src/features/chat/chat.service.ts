@@ -4,6 +4,7 @@ import {
   Conversation,
   ConversationMessage,
   ConversationPreview,
+  ListConversation,
   ListUser,
   NewConversationBody,
   NewConversationResponse,
@@ -39,6 +40,16 @@ export class ChatService {
     return this.http
       .get<Conversation>(`${this.apiUrl}/conversations/${id}`, { withCredentials: true })
       .subscribe((conversation) => this.conversation.set(conversation));
+  }
+
+  joinConversation(id: string) {
+    return this.http.post(`${this.apiUrl}/conversations/${id}/join`, null, { withCredentials: true })
+  }
+
+  getConversations() {
+    return this.http.get<ListConversation>(`${this.apiUrl}/conversations/discover`, {
+      withCredentials: true,
+    });
   }
 
   getConversationPreviews() {

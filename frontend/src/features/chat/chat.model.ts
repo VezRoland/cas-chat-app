@@ -22,6 +22,8 @@ export interface Conversation {
   };
 }
 
+export type ListConversation = Pick<Conversation, 'id' | 'title' | 'createdAt' | '_count'>;
+
 export interface ConversationPreview {
   id: string;
   title: string;

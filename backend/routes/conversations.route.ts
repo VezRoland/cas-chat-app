@@ -92,7 +92,9 @@ router.post(
         },
       });
 
-      return res.sendStatus(201);
+      return res
+        .status(201)
+        .json({ message: "Successfully joined the conversation." });
     } catch (error) {
       return next(error);
     }

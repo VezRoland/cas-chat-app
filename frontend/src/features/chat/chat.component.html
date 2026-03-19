@@ -4,6 +4,7 @@
       <img class="w-8 h-8 rounded-full" src="{{ user()?.profilePicture }}" alt="Profile picture" />
       <span>{{ user()?.username }}</span>
       <users></users>
+      <conversations></conversations>
       <button matIconButton="filled" (click)="handleSignOut()">
         <mat-icon fontIcon="logout"></mat-icon>
       </button>

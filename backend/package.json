@@ -1,8 +1,9 @@
 {
   "name": "@cas-chat-app/backend",
   "type": "module",
+  "main": "index.ts",
   "scripts": {
-    "start": "npx tsx index.ts",
+    "start": "tsx watch ./",
     "seed": "npx tsx prisma/seed.ts"
   },
   "devDependencies": {

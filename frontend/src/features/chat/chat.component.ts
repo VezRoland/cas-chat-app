@@ -5,9 +5,17 @@ import { Router, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { UsersComponent } from './users/users.component';
+import { ConversationsComponent } from './conversations/conversations.component';
 
 @Component({
-  imports: [ChatListComponent, RouterOutlet, MatButtonModule, MatIconModule, UsersComponent],
+  imports: [
+    ChatListComponent,
+    RouterOutlet,
+    MatButtonModule,
+    MatIconModule,
+    UsersComponent,
+    ConversationsComponent,
+  ],
   templateUrl: './chat.component.html',
 })
 export class ChatComponent {
