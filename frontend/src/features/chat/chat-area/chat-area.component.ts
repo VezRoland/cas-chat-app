@@ -1,7 +1,13 @@
-import { Component, computed, effect, inject, input, linkedSignal, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import { ChatService } from '../chat.service';
 import { AuthService } from '../../auth/auth.service';
-import { NgClass, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -30,7 +36,7 @@ import { ChatSocketService } from '../chat.socket.service';
     MatListModule,
   ],
 })
-export class ChatAreaComponent implements OnInit {
+export class ChatAreaComponent {
   private router = inject(Router);
   private titleService = inject(Title);
   private chatService = inject(ChatService);
@@ -58,16 +64,13 @@ export class ChatAreaComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.chatSocketService.onMessageSent((message) => {
-      if (this.conversation()?.id !== message.conversationId) return;
-      this.messages.update((msg) => [...msg, message]);
-    });
-  }
-
   sendMessage() {
     const text = this.messageForm.message().value().trim();
     const id = this.id();
+
+    this.chatSocketService.getMessage().subscribe({
+      next: (message) => console.log(message),
+    });
 
     if (id && text.length > 0) {
       this.chatSocketService.sendMessage({

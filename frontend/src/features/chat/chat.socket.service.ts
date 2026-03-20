@@ -1,24 +1,19 @@
 import { Injectable } from '@angular/core';
-import { io, Socket } from 'socket.io-client';
+import { Socket } from 'ngx-socket-io';
 import { ConversationMessage } from './chat.model';
+import { map } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ChatSocketService {
-  private socket: Socket;
-
-  constructor() {
-    this.socket = io('http://localhost:3000', {
-      withCredentials: true,
-    });
-  }
+  constructor(private socket: Socket) {}
 
   sendMessage(message: { userId: string; conversationId: string; content: string }): void {
     this.socket.emit('message:create', message);
   }
 
-  onMessageSent(
-    callback: (message: ConversationMessage & { conversationId: string }) => void,
-  ): void {
-    this.socket.on('message:create', callback);
+  getMessage() {
+    return this.socket
+      .fromEvent('message:create')
+      .pipe(map((message: ConversationMessage) => message));
   }
 }

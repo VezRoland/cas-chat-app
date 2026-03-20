@@ -21,8 +21,6 @@ const io = new Server(server, {
 
 // Socket
 io.on("connection", (socket) => {
-  console.log(`A user connected: ${socket.id}`);
-
   conversationsSocket(io, socket);
 
   socket.on("disconnect", () => {
