@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, linkedSignal, OnInit, signal } from '@angular/core';
 import { ChatService } from '../chat.service';
 import { AuthService } from '../../auth/auth.service';
 import { NgClass, DatePipe } from '@angular/common';
@@ -12,6 +12,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { ChatSocketService } from '../chat.socket.service';
 
 @Component({
   selector: 'chat-area',
@@ -29,7 +30,7 @@ import { Title } from '@angular/platform-browser';
     MatListModule,
   ],
 })
-export class ChatAreaComponent {
+export class ChatAreaComponent implements OnInit {
   private router = inject(Router);
   private titleService = inject(Title);
   private chatService = inject(ChatService);
@@ -45,7 +46,7 @@ export class ChatAreaComponent {
   });
   messageForm = form(this.messageModel);
 
-  constructor() {
+  constructor(private chatSocketService: ChatSocketService) {
     effect(() => {
       if (this.id()) {
         const currentId = this.id()!;
@@ -57,12 +58,23 @@ export class ChatAreaComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.chatSocketService.onMessageSent((message) => {
+      if (this.conversation()?.id !== message.conversationId) return;
+      this.messages.update((msg) => [...msg, message]);
+    });
+  }
+
   sendMessage() {
     const text = this.messageForm.message().value().trim();
     const id = this.id();
 
     if (id && text.length > 0) {
-      this.chatService.sendConversationMessage(id, text);
+      this.chatSocketService.sendMessage({
+        userId: this.user()?.id || '',
+        conversationId: this.conversation()?.id || '',
+        content: text,
+      });
       this.messageForm.message().reset('');
     }
   }

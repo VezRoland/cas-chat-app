@@ -100,7 +100,7 @@ export class ChatService {
         withCredentials: true,
       })
       .subscribe({
-        next: (user) => this.conversationUser.set(user),
+        next: (user) => user,
       });
   }
 }
