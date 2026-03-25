@@ -7,6 +7,15 @@
   ],
   "scripts": {
     "backend:dev": "cd backend && npm run dev",
+    "backend:start": "cd backend && npm run start",
+    "backend:generate": "cd backend && npm run generate",
+    "backend:deploy": "cd backend && npm run deploy",
+    "backend:seed": "cd backend && npm run seed",
+    "frontend:dev": "cd frontend && npm run dev",
+    "frontend:build": "cd frontend && npm run build",
     "frontend:start": "cd frontend && npm run start"
+  },
+  "dependencies": {
+    "cookie": "^1.1.1"
   }
 }

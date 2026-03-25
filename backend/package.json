@@ -3,7 +3,10 @@
   "type": "module",
   "main": "index.ts",
   "scripts": {
-    "dev": "tsx watch ./",
+    "dev": "tsx watch .",
+    "start": "npx tsx index.ts",
+    "generate": "npx prisma generate",
+    "deploy": "npx prisma migrate deploy",
     "seed": "npx tsx prisma/seed.ts"
   },
   "devDependencies": {

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { emailPasswordAuth, isGuest, isSignedIn } from "../auth.middleware";
+import { emailPasswordAuth, isGuest, isSignedIn } from "../lib/auth.middleware";
 
 import { prisma } from "../prisma/prisma";
 import bcrypt from "bcrypt";

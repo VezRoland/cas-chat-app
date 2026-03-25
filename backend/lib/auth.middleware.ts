@@ -1,33 +1,13 @@
 import type { NextFunction, Request, Response } from "express";
-import { prisma } from "./prisma/prisma";
+import { prisma } from "../prisma/prisma";
 import bcrypt from "bcrypt";
 import { z } from "zod";
-
-async function doesSessionExist(req: Request, res: Response) {
-  if (!req.cookies.sessionId) return false;
-
-  try {
-    const userSession = await prisma.userSession.findUnique({
-      where: { id: req.cookies.sessionId },
-      include: { user: true },
-    });
-
-    if (!userSession) {
-      res.clearCookie("sessionId");
-      return false;
-    }
-
-    req.user = userSession.user;
-    return true;
-  } catch (error) {
-    throw error;
-  }
-}
+import { isAuthenticated } from "./auth";
 
 export async function isGuest(req: Request, res: Response, next: NextFunction) {
   try {
-    if (await doesSessionExist(req, res)) {
-      return res.sendStatus(400);
+    if (await isAuthenticated(req.cookies.sessionId)) {
+      return res.status(400).json({ message: "Already signed in" });
     }
     return next();
   } catch (error) {
@@ -41,10 +21,12 @@ export async function isSignedIn(
   next: NextFunction,
 ) {
   try {
-    if (await doesSessionExist(req, res)) {
+    const user = await isAuthenticated(req.cookies.sessionId);
+    if (user) {
+      req.user = user;
       return next();
     }
-    return res.sendStatus(400);
+    return res.status(403).json({ message: "Unauthorized" });;
   } catch (error) {
     return next(error);
   }
@@ -73,16 +55,14 @@ export async function emailPasswordAuth(
     },
   });
 
-  if (!user || !user.credentials[0])
-    return res.sendStatus(403);
+  if (!user || !user.credentials[0]) return res.sendStatus(403);
 
   const doPasswordsMatch = await bcrypt.compare(
     data.password,
     user.credentials[0].identifier,
   );
 
-  if (!doPasswordsMatch)
-    return res.sendStatus(403);
+  if (!doPasswordsMatch) return res.sendStatus(403);
 
   const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
   const session = await prisma.userSession.create({

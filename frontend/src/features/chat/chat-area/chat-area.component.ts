@@ -1,10 +1,4 @@
-import {
-  Component,
-  effect,
-  inject,
-  input,
-  signal,
-} from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { ChatService } from '../chat.service';
 import { AuthService } from '../../auth/auth.service';
 import { DatePipe } from '@angular/common';
@@ -16,9 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { form, FormField } from '@angular/forms/signals';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { ChatSocketService } from '../chat.socket.service';
 
 @Component({
   selector: 'chat-area',
@@ -38,6 +31,7 @@ import { ChatSocketService } from '../chat.socket.service';
 })
 export class ChatAreaComponent {
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private titleService = inject(Title);
   private chatService = inject(ChatService);
 
@@ -45,19 +39,22 @@ export class ChatAreaComponent {
 
   user = this.chatService.conversationUser;
   conversation = this.chatService.conversation;
-  messages = this.chatService.conversationMessages;
+  messages = this.chatService.messages;
 
   messageModel = signal({
     message: '',
   });
   messageForm = form(this.messageModel);
 
-  constructor(private chatSocketService: ChatSocketService) {
+  constructor() {
+    this.route.params.subscribe((params) => {
+      this.chatService.activeChatId.set(params['id']);
+    });
+
     effect(() => {
       if (this.id()) {
         const currentId = this.id()!;
         this.chatService.getConversation(currentId);
-        this.chatService.getConversationMessages(currentId);
         this.chatService.getConversationUser(currentId);
         this.titleService.setTitle(`${this.conversation()?.title} | Chat App`);
       }
@@ -68,16 +65,8 @@ export class ChatAreaComponent {
     const text = this.messageForm.message().value().trim();
     const id = this.id();
 
-    this.chatSocketService.getMessage().subscribe({
-      next: (message) => console.log(message),
-    });
-
     if (id && text.length > 0) {
-      this.chatSocketService.sendMessage({
-        userId: this.user()?.id || '',
-        conversationId: this.conversation()?.id || '',
-        content: text,
-      });
+      this.chatService.sendConversationMessage(text);
       this.messageForm.message().reset('');
     }
   }

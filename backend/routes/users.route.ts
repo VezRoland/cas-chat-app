@@ -1,4 +1,4 @@
-import { isSignedIn } from "../auth.middleware";
+import { isSignedIn } from "../lib/auth.middleware";
 import { prisma } from "../prisma/prisma";
 import { z } from "zod";
 import bcrypt from "bcrypt";

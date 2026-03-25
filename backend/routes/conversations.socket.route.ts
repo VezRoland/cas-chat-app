@@ -1,23 +1,24 @@
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { prisma } from "../prisma/prisma";
 import { z } from "zod";
 
-const createMessageSchema = z.object({
-  userId: z.string().nonempty(),
-  conversationId: z.string().nonempty(),
-  content: z.string().nonempty(),
-});
+const handler = (io: Server, socket: Socket) => {
+  const selectConversation = async (id: string) => {
+    if (!id) return;
+    socket.rooms.forEach((room) => {
+      if (room !== socket.id) socket.leave(room);
+    });
 
-module.exports = (io: any, socket: Server) => {
-  const createMessage = async (message: any) => {
-    const { data, error } = createMessageSchema.safeParse(message);
-    if (error) return;
+    socket.join(id);
+    console.log(`${socket.data.user.username} selected room: ${id}`);
+  };
 
+  const sendMessage = async (data: { id: string; content: string }) => {
     try {
       const message = await prisma.conversationMessage.create({
         data: {
-          conversationId: data.conversationId,
-          userId: data.userId,
+          conversationId: data.id,
+          userId: socket.data.user.id,
           content: data.content,
         },
         select: {
@@ -36,11 +37,14 @@ module.exports = (io: any, socket: Server) => {
         },
       });
 
-      io.emit("message:create", message);
+      io.emit("message:new", message);
     } catch (error) {
       return;
     }
   };
 
-  socket.on("message:create", createMessage);
+  socket.on("message:send", sendMessage);
+  socket.on("conversation:select", selectConversation);
 };
+
+export default handler;
